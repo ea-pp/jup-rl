@@ -511,7 +511,13 @@ $$
 L_{\theta_{\text{old}}}(\theta) = \mathbb{E}_{s \sim \rho_{\theta_{\text{old}}}, a \sim \pi_{\theta_{\text{old}}}} \left[ \frac{\pi_\theta(a|s)}{\pi_{\theta_{\text{old}}}(a|s)} A^{\pi_{\theta_{\text{old}}}}(s,a) \right]
 $$
 
-where $\rho_{\theta_{\text{old}}}$ is the state distribution under the old policy.
+**Notation clarification:**
+
+- $L_{\theta_{\text{old}}}(\theta)$ — "L" for "local approximation" or "lower bound". The subscript $\theta_{\text{old}}$ means "using data from the old policy." The argument $\theta$ is what we're optimizing. So $L_{\theta_{\text{old}}}(\theta)$ asks: "using samples collected with $\theta_{\text{old}}$, how good would $\theta$ be?"
+
+- $\rho_{\theta_{\text{old}}}$ — the **state visitation distribution** under the old policy. When you roll out $\pi_{\theta_{\text{old}}}$ for many trajectories, $\rho_{\theta_{\text{old}}}(s)$ is the fraction of time you spend in state $s$. Formally: $\rho_\pi(s) = \sum_{t=0}^{\infty} \gamma^t P(s_t = s | \pi)$ (discounted state visitation).
+
+- $\frac{\pi_\theta(a|s)}{\pi_{\theta_{\text{old}}}(a|s)}$ — the **importance sampling ratio**. It corrects for the fact that we're evaluating $\pi_\theta$ but using actions sampled from $\pi_{\theta_{\text{old}}}$.
 
 **Important property:** At $\theta = \theta_{\text{old}}$, the ratio $\frac{\pi_\theta}{\pi_{\theta_{\text{old}}}} = 1$, and:
 
